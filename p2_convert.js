@@ -74,8 +74,27 @@ function callbackVersion() {
 // 같은 순서(a → b → c), 같은 출력. 중첩 없이, 루프 하나와 try/catch 하나로.
 async function main() {
   // TODO
+  try {
+    const results = [];
+
+    for(const file of FILES) { 
+    const text = await fsp.readFile(file,"utf8");
+    const s = stats(text);
+
+    console.log(`${file}: ${s.lines} lines, ${s.words} words`);
+    results.push(s);
+  }
+
+  console.log(
+    `total : ${results[0].lines + results[1].lines + results[2].lines} lines`
+  );
+  } catch (err) {
+  console.error("Failed : ", err.message);
+  process.exit(1);
+  }
 }
+  
 
 // 먼저 callbackVersion() 을 한 번 실행해서 기대 출력을 눈으로 본 다음, main() 으로 바꾼다.
-// callbackVersion();
+//callbackVersion();
 main();
